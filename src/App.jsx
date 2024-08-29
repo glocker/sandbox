@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Tabs from './Tabs/Tabs';
+import Grid from './GridPagination/Grid';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -22,7 +23,7 @@ function App() {
 
   return (
     <>
-      <Tabs data={mockData} />
+      <Grid />
     </>
   )
 }
