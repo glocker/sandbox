@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import users from './users.json';
 import './style.css';
+import Paginator from './Paginator';
 
 export default function Grid() {
+
+    const [page, setPage] = useState(1);
+
     return (
         <>
             <h3>Staff list</h3>
@@ -17,6 +21,7 @@ export default function Grid() {
                     </>
                 )
             })}
+            <Paginator page={page} onClick={handleClick}/>
             </div>
         </>
     )
