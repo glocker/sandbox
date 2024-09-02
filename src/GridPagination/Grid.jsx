@@ -22,10 +22,6 @@ export default function Grid() {
     // Next work only with short version
     const usersSlice = getSlicedList();
 
-    function handleClick() {
-        return;
-    }
-
     return (
         <>
             <h3>Staff list</h3>
@@ -41,8 +37,8 @@ export default function Grid() {
                 )
             })}
             <Paginator
-                page={page} 
-                onClick={handleClick} 
+                page={page}
+                setPage={setPage}
                 disabled={page === 1 || page === TOTAL_PAGES}
                 totalPages={TOTAL_PAGES}
             />
