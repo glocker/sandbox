@@ -3,12 +3,24 @@ import users from './users.json';
 import './style.css';
 import Paginator from './Paginator';
 
-const ROWS_PER_PAGE = 10;
-const TOTAL_PAGES = Math.ceil(users.length / ROWS_PER_PAGE);
+const USERS_PER_PAGE = 5;
+const TOTAL_PAGES = Math.ceil(users.length / USERS_PER_PAGE);
 
 export default function Grid() {
 
     const [page, setPage] = useState(1);
+
+    // Get short users list
+    function getSlicedList() {
+
+        const start = (page - 1) * USERS_PER_PAGE;
+        const end = start + USERS_PER_PAGE;
+
+        return users.slice(start, end);
+    }
+
+    // Next work only with short version
+    const usersSlice = getSlicedList();
 
     function handleClick() {
         return;
@@ -18,7 +30,7 @@ export default function Grid() {
         <>
             <h3>Staff list</h3>
             <div className="grid-container">
-            {users.map((user, index) => {
+            {usersSlice.map((user, index) => {
                 return (
                     <>
                         <div key={user.id}>{user.id}</div>

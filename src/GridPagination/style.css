@@ -5,4 +5,7 @@
 
 .paginator-container {
     display: flex;
+    justify-content: space-around;
+    width: 380px;
+    margin: 5px 0;
 }
