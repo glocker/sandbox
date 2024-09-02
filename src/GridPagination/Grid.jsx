@@ -3,9 +3,16 @@ import users from './users.json';
 import './style.css';
 import Paginator from './Paginator';
 
+const ROWS_PER_PAGE = 10;
+const TOTAL_PAGES = Math.ceil(users.length / ROWS_PER_PAGE);
+
 export default function Grid() {
 
     const [page, setPage] = useState(1);
+
+    function handleClick() {
+        return;
+    }
 
     return (
         <>
@@ -21,7 +28,12 @@ export default function Grid() {
                     </>
                 )
             })}
-            <Paginator page={page} onClick={handleClick}/>
+            <Paginator
+                page={page} 
+                onClick={handleClick} 
+                disabled={page === 1 || page === TOTAL_PAGES}
+                totalPages={TOTAL_PAGES}
+            />
             </div>
         </>
     )
