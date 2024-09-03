@@ -26,22 +26,26 @@ export default function Grid() {
         <>
             <h3>Staff list</h3>
             <div className="grid-container">
-            {usersSlice.map((user, index) => {
-                return (
-                    <>
-                        <div key={user.id}>{user.id}</div>
-                        <div key={user.id}>{user.name}</div>
-                        <div key={user.id}>{user.age}</div>
-                        <div key={user.id}>{user.occupation}</div>
-                    </>
-                )
-            })}
-            <Paginator
-                page={page}
-                setPage={setPage}
-                disabled={page === 1 || page === TOTAL_PAGES}
-                totalPages={TOTAL_PAGES}
-            />
+                <span>Id</span>
+                <span>Name</span>
+                <span>Age</span>
+                <span>Occupation</span>
+                {usersSlice.map((user, index) => {
+                    return (
+                        <>
+                            <div key={user.id}>{user.id}</div>
+                            <div key={user.id}>{user.name}</div>
+                            <div key={user.id}>{user.age}</div>
+                            <div key={user.id}>{user.occupation}</div>
+                        </>
+                    )
+                })}
+                <Paginator
+                    page={page}
+                    setPage={setPage}
+                    disabled={page === 1 || page === TOTAL_PAGES}
+                    totalPages={TOTAL_PAGES}
+                />
             </div>
         </>
     )
