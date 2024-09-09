@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import users from './users.json';
 import './style.css';
 import Paginator from './Paginator';
@@ -22,6 +22,22 @@ export default function Grid() {
     // Next work only with short version
     const usersSlice = getSlicedList();
 
+    const prevPageClick = useCallback(() => {
+        const currentPage = page;
+        const prevPage = currentPage - 1;
+
+        setPage(prevPage > 0 ? prevPage : currentPage);
+    }, [page]);
+
+    const nextPageClick = useCallback(() => {
+        const currentPage = page;
+        const nextPage = currentPage + 1;
+
+        const total = users ? TOTAL_PAGES : currentPage;
+
+        setPage(nextPage <= total ? nextPage : currentPage);
+    }, [page, users]);
+
     return (
         <>
             <h3>Staff list</h3>
@@ -33,16 +49,17 @@ export default function Grid() {
                 {usersSlice.map((user, index) => {
                     return (
                         <>
-                            <div key={user.id}>{user.id}</div>
-                            <div key={user.id}>{user.name}</div>
-                            <div key={user.id}>{user.age}</div>
-                            <div key={user.id}>{user.occupation}</div>
+                            <div key={user.id + '_id'}>{user.id}</div>
+                            <div key={user.id + '_name'}>{user.name}</div>
+                            <div key={user.id + '_age'}>{user.age}</div>
+                            <div key={user.id + '_occupation'}>{user.occupation}</div>
                         </>
                     )
                 })}
                 <Paginator
                     page={page}
-                    setPage={setPage}
+                    onPrevPageClick={prevPageClick}
+                    onNextPageClick={nextPageClick}
                     disabled={page === 1 || page === TOTAL_PAGES}
                     totalPages={TOTAL_PAGES}
                 />
