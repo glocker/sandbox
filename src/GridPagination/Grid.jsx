@@ -3,18 +3,20 @@ import users from './users.json';
 import './style.css';
 import Paginator from './Paginator';
 
-const USERS_PER_PAGE = 5;
-const TOTAL_PAGES = Math.ceil(users.length / USERS_PER_PAGE);
+const USERS_PER_PAGE = [5, 10, 15];
 
 export default function Grid() {
 
     const [page, setPage] = useState(1);
+    const [usersPerPage, setUsers] = useState(5);
+
+    const TOTAL_PAGES = Math.ceil(users.length / usersPerPage);
 
     // Get short users list
     function getSlicedList() {
 
-        const start = (page - 1) * USERS_PER_PAGE;
-        const end = start + USERS_PER_PAGE;
+        const start = (page - 1) * usersPerPage;
+        const end = start + usersPerPage;
 
         return users.slice(start, end);
     }
@@ -63,6 +65,11 @@ export default function Grid() {
                     disabled={page === 1 || page === TOTAL_PAGES}
                     totalPages={TOTAL_PAGES}
                 />
+                <select>
+                    {USERS_PER_PAGE.map((qty) => {
+                        return (<option key={qty} value={qty}>See {qty}</option>);
+                    })}
+                </select>
             </div>
         </>
     )
