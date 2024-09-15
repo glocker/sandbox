@@ -58,16 +58,19 @@ export default function Grid() {
                         </>
                     )
                 })}
-                <Paginator
+            </div>
+            <Paginator
                     page={page}
                     onPrevPageClick={prevPageClick}
                     onNextPageClick={nextPageClick}
                     disabled={page === 1 || page === TOTAL_PAGES}
                     totalPages={TOTAL_PAGES}
                 />
+            <div className="selector-container">
+                <span>Users per page:</span>
                 <select>
                     {USERS_PER_PAGE.map((qty) => {
-                        return (<option key={qty} value={qty}>See {qty}</option>);
+                        return (<option key={qty} value={qty}>{qty}</option>);
                     })}
                 </select>
             </div>

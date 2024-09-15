@@ -16,3 +16,12 @@
 .active {
     background-color: rgb(166, 0, 255);
 }
+
+.selector-container {
+    padding: 10px 0;
+}
+
+.selector-container select {
+    padding: 0 10px;
+    margin: 0 10px;
+}
