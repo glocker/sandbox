@@ -3,6 +3,7 @@ import users from './users.json';
 import './style.css';
 import Paginator from './Paginator';
 
+// Users quiantity in selector
 const USERS_PER_PAGE = [5, 10, 15];
 
 export default function Grid() {
@@ -40,6 +41,10 @@ export default function Grid() {
         setPage(nextPage <= total ? nextPage : currentPage);
     }, [page, users]);
 
+    const handleChange = useCallback((event) => {
+        setUsers(event.target.value);
+    }, [usersPerPage, page]);
+
     return (
         <>
             <h3>Staff list</h3>
@@ -68,7 +73,7 @@ export default function Grid() {
                 />
             <div className="selector-container">
                 <span>Users per page:</span>
-                <select>
+                <select onChange={handleChange}>
                     {USERS_PER_PAGE.map((qty) => {
                         return (<option key={qty} value={qty}>{qty}</option>);
                     })}
