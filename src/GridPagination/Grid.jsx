@@ -42,7 +42,7 @@ export default function Grid() {
     }, [page, users]);
 
     const handleChange = useCallback((event) => {
-        setUsers(event.target.value);
+        setUsers(Number(event.target.value));
     }, [usersPerPage, page]);
 
     return (
