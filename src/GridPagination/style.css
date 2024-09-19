@@ -9,3 +9,7 @@
     width: 380px;
     margin: 5px 0;
 }
+
+.grid-container span {
+    font-weight: bold;
+}
