@@ -2,7 +2,22 @@ import './style.css';
 import { useState } from 'react';
 import Tab from './Tab';
 
-export default function Tabs({data}) {
+export default function Tabs() {
+
+    const data = [
+        {
+            name: 'tab1',
+            text: 'text1'
+        },
+        {
+            name: 'tab2',
+            text: 'text2'
+        },
+        {
+            name: 'tab3',
+            text: 'text3'
+        }
+    ];
 
     const [activeTab, setActive] = useState(0);
 

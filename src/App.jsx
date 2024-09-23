@@ -1,30 +1,24 @@
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Tabs from './Tabs/Tabs';
-import Grid from './GridPagination/Grid';
+import Tabs from 'Pages/Tabs/Tabs';
+import Grid from 'Pages/GridPagination/Grid';
+import HomePage from 'Pages/HomePage/HomePage';
+import NoPage from 'Pages/NoPage/NoPage';
+import Layout from 'Pages/Layout/Layout';
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const mockData = [
-    {
-        name: 'tab1',
-        text: 'text1'
-    },
-    {
-        name: 'tab2',
-        text: 'text2'
-    },
-    {
-        name: 'tab3',
-        text: 'text3'
-    }
-];
 
   return (
-    <>
-      <Grid />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/pagination" element={<Grid />} />
+          <Route path="/tabs" element={<Tabs />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
