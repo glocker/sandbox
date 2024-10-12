@@ -11,12 +11,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
+          <Route path="/" element={<Layout />} />
           <Route path="/pagination" element={<Grid />} />
           <Route path="/tabs" element={<Tabs />} />
           <Route path="*" element={<NoPage />} />
-        </Route>
       </Routes>
     </BrowserRouter>
   )
