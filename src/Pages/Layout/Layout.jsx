@@ -3,21 +3,19 @@ import { Outlet, Link } from 'react-router-dom';
 export default function Layout() {
     return (
         <>
-            <nav>
-                <ul>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/tabs">Tabs</Link>
-                    <span>Tabs task description</span>
-                </li>
-                <li>
+            <div>
+                <Link to="/">Home</Link>
+                <details>
+                    <summary>Tabs</summary>
+                    Tabs task description
+                    <Link to="/tabs">See realization</Link>
+                </details>
+                <details>
+                    <summary>Pagination</summary>
+                    Pagination task description
                     <Link to="/pagination">Pagination</Link>
-                    <span>Pagination task description</span>
-                </li>
-                </ul>
-            </nav>
+                </details>
+            </div>
 
             <Outlet />
     </>
