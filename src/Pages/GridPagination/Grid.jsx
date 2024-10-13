@@ -46,7 +46,7 @@ export default function Grid() {
     }, [usersPerPage, page]);
 
     return (
-        <>
+        <div className="page-container">
             <h3>Staff list</h3>
             <div className="grid-container">
                 <span>Id</span>
@@ -79,6 +79,6 @@ export default function Grid() {
                     })}
                 </select>
             </div>
-        </>
+        </div>
     )
 }

@@ -28,7 +28,7 @@ export default function Tabs() {
     }
 
     return (
-        <>
+        <div className="page-container">
         Tabs list
         <div className="tabsList">
             {data.map((item, index) => {
@@ -47,6 +47,6 @@ export default function Tabs() {
                 )
             })}
         </div>
-        </>
+        </div>
     );
 }
