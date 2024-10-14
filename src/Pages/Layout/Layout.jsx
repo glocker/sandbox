@@ -68,6 +68,55 @@ export default function Layout() {
                         <Link to="/pagination">See</Link>
                     </article>
                 </details>
+                <details className="sketchy-border">
+                    <summary>
+                        <span>Job Board</span>
+                        <p>
+                            Build a job board that displays the latest job postings fetched from the Hacker 
+                            News API, with each posting displaying the job title, poster, and date posted
+                        </p>
+                    </summary>
+                    <article className="article-container">
+                        <h3>Requirements</h3>
+                        <ul>
+                            <li>
+                                The page should show 6 jobs on initial load with a button to load more postings.
+                            </li>
+                            <li>
+                                Clicking on the "Load more" button will load the next page of 6 postings. 
+                                The button does not appear if there aren't any more postings to load.
+                            </li>
+                            <li>
+                                If there's a url field returned for the job details, make the job title 
+                                a link that opens the job details page in a new window when clicked.
+                            </li>
+                            <li>
+                                The timestamp can be formatted in any way you like.
+                            </li>
+                        </ul>
+                        <h3>API</h3>
+                        <p>
+                            Hacker News has a public API to fetch jobs by Y Combinator companies. 
+                            There's no single API that fetches a list of jobs together with the data, 
+                            so you will have to make separate requests to fetch the necessary 
+                            data and combine them to be displayed.
+                        </p>
+                        <h3>Job Details</h3>
+                        <ul>
+                            Fetches job posting details given its ID.
+                            <li>
+                                URL: <code>`https://hacker-news.firebaseio.com/v0/item/{'id'}.json`</code>
+                            </li>
+                            <li>
+                                HTTP Method: GET
+                            </li>
+                            <li>
+                                Content Type: json
+                            </li>
+                        </ul>
+                        <Link to="/jobboard">See</Link>
+                    </article>
+                </details>
             </div>
 
             <Outlet />
