@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 export default function JobBoard() {
 
     const [isLoading, setLoading] = useState(true);
+    const [jobs, setJobs] = useState();
     let jobsData;
 
     useEffect(() => {
@@ -37,6 +38,9 @@ export default function JobBoard() {
                         });
                     })
                 );
+
+                const jobs = [...data];
+                setJobs(jobs);
             }
 
         }
