@@ -3,56 +3,65 @@ import { useEffect, useState } from 'react';
 export default function JobBoard() {
 
     const [isLoading, setLoading] = useState(true);
-    const [jobs, setJobs] = useState();
+    const [jobs, setJobs] = useState([]);
     let jobsData;
 
-    useEffect(() => {
+    // function getJobsId() {
 
-        async function getJobsId() {
+    //     return new Promise((resolve, reject) => {
+    //         fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
+    //         .then((response) => {
+    //             return response.json();
+    //         })
+    //         .then((result) => {
+    //             resolve(result);
+    //         })
+    //         .catch((error) => {
+    //             reject(error);
+    //         })
+    //     });
+    // }
 
-            await fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
-            .then((response) => {
-                return response.json();
+    function getJobsData() {
+
+        fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
+            .then(response => response.json())
+            .then((jobsIdList) => {
+
+                // Check if Ids exists
+                if (jobsIdList && jobsIdList.length) {
+
+                    // Get only first 6 jobs of all existed jobs
+                    return jobsIdList.slice(0, 6);
+                }
             })
-            .then((result) => {
-                return result;
-            });
-        }
-
-        async function getJobsData() {
-
-            const jobsIdList = await getJobsId();
-
-            // Check if Ids exists
-            if (jobsIdList && jobsIdList.length) {
-
-                // Get only first 6 jobs of all existed jobs
-                jobsIdList.slice(0, 6);
+            .then((jobsToShow) => {
 
                 // Request job data for every job id
-                const data = await Promise.all(
-                    jobsIdList.map((jobId) => {
+                Promise.all(
+                    jobsToShow.map((jobId) => {
                         fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`)
-                        .then((response) => {
-                            response.json();
-                        });
+                            .then((res) => console.log(res))
                     })
-                );
+                )
+                .then((response) => {
 
-                const jobs = [...data];
-                setJobs(jobs);
-            }
+                    console.log(response);
+                    // const jobs = response.json();
+                    // setJobs(jobs);
+                });
+            })
+    }
 
-        }
-
-        jobsData = getJobsData();
-
-        setLoading(false);
-        console.log(jobsData);
-
+    useEffect(() => {
+        getJobsData()
     }, []);
 
     return (
-        <div>123</div>
+        <div>
+            {
+                jobs
+            }
+        </div>
     );
 }
