@@ -38,10 +38,9 @@ export default function JobBoard() {
             .then((jobsToShow) => {
 
                 // Request job data for every job id
-                Promise.all(
+                return Promise.all(
                     jobsToShow.map((jobId) => {
-                        fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`)
-                            .then((res) => console.log(res))
+                        fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`);
                     })
                 )
                 .then((response) => {
