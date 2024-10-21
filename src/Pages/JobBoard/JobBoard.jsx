@@ -1,31 +1,30 @@
 import { useEffect, useState } from 'react';
 
+const JOBS_IDS_URL = 'https://hacker-news.firebaseio.com/v0/jobstories.json';
+
 export default function JobBoard() {
 
     const [isLoading, setLoading] = useState(true);
-    const [jobs, setJobs] = useState([]);
-    let jobsData;
+    let [jobs, setJobs] = useState([]);
 
-    // function getJobsId() {
+    function getJobsId(jobsIdsUrl) {
+        return fetch(jobsIdsUrl)
+            .then(response => response.json());
+    }
 
-    //     return new Promise((resolve, reject) => {
-    //         fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
-    //         .then((response) => {
-    //             return response.json();
-    //         })
-    //         .then((result) => {
-    //             resolve(result);
-    //         })
-    //         .catch((error) => {
-    //             reject(error);
-    //         })
-    //     });
-    // }
+    function getJobsData(jobsToShow) {
 
-    function getJobsData() {
+        // Request job data for every job id
+        return Promise.all(
+            jobsToShow.map((jobId) => {
+                return fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`)
+                    .then(response => response.json());
+            })
+        )
+    }
 
-        fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
-            .then(response => response.json())
+    useEffect(() => {
+        getJobsId(JOBS_IDS_URL)
             .then((jobsIdList) => {
 
                 // Check if Ids exists
@@ -35,31 +34,17 @@ export default function JobBoard() {
                     return jobsIdList.slice(0, 6);
                 }
             })
-            .then((jobsToShow) => {
-
-                // Request job data for every job id
-                return Promise.all(
-                    jobsToShow.map((jobId) => {
-                        fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`);
-                    })
-                )
-                .then((response) => {
-
-                    console.log(response);
-                    // const jobs = response.json();
-                    // setJobs(jobs);
-                });
-            })
-    }
-
-    useEffect(() => {
-        getJobsData()
+            .then((jobsToShow) => getJobsData(jobsToShow))
+            .then(result => {
+                setJobs(result);
+                console.log(result);
+            });
     }, []);
 
     return (
         <div>
             {
-                jobs
+                jobs.map(job => job.title)
             }
         </div>
     );
