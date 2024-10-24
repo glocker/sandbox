@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import Card from './Card';
+import './JobBoard.css';
 
 export default function JobBoard() {
 
@@ -34,10 +36,8 @@ export default function JobBoard() {
     }, []);
 
     return (
-        <div>
-            {
-                jobs.map(job => job.title)
-            }
-        </div>
+        <>
+            {jobs.map(job => <Card job={job} key={job.id} />)}
+        </>
     );
 }
