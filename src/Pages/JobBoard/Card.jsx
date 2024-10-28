@@ -13,7 +13,7 @@ export default function Card({job}) {
             </header>
             <footer>
                 <div>Author: {by}</div>
-                <div>{date.toString()}</div>
+                <div>{date.toLocaleString()}</div>
             </footer>
         </article>
     )
