@@ -18,7 +18,7 @@ export default function JobBoard() {
 
     function moreButtonHandler() {
 
-        if (jobsIdList.length > ITEMS_ON_PAGE.page) {
+        if (jobsIdList.length > ITEMS_ON_PAGE[page]) {
             getJobsById()
         }
     }
@@ -48,20 +48,22 @@ export default function JobBoard() {
                 // Check if Ids exists
                 if (list && list.length) {
 
+                    const firstPage = list.slice(0, ITEMS_ON_PAGE[page]);
+
                     // Get only first 6 jobs of all existed jobs
-                    setJobsToShow(list.slice(0, ITEMS_ON_PAGE.page));
+                    setJobsToShow(firstPage);
                     setPage(page + 1);
 
                     // Save ids to omit unnecassary request to call getJobsList by clicking load more
-                    setJobsId(list);
+                    setJobsId(firstPage);
 
-                    return getJobsById(list)
+                    return getJobsById(firstPage)
                 }
             })
             .then(result => {
                 setJobs(result);
             })
-    }, [jobsIdList]);
+    }, []);
 
     return (
         <>
