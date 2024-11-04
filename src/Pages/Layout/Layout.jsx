@@ -117,6 +117,21 @@ export default function Layout() {
                         <Link to="/jobboard">See</Link>
                     </article>
                 </details>
+                <details className="sketchy-border">
+                    <summary>
+                        <span>Custom functions</span>
+                        <p>
+                            Write own implementation of basic methods of arrays, Promises, objects and etc
+                        </p>
+                    </summary>
+                    <article className="article-container">
+                        <h3>List of functions</h3>
+                        <ul>
+                            <li>Array.prototype.map</li>
+                        </ul>
+                        <Link to="/customFunctions">See</Link>
+                    </article>
+                </details>
             </div>
 
             <Outlet />
