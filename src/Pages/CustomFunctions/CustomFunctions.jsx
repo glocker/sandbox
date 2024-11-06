@@ -27,8 +27,23 @@ export default function CustomFunction() {
         return newArray;
     }
 
+    // Custom Array.prototype.filter
+    Array.prototype.myFilter = function(callback) {
+
+        const newArray = [];
+
+        for (let i = 0; i < this.length; i++) {
+            if (callback(this[i], i, this)) {
+              newArray.push(this[i]);
+            }
+        }
+
+        return newArray;
+    }
+
     const resultMap = arrOfNums.myMap(item => item + 1);
     const resultForEach = arrOfNums.myForEach(item => item * 3);
+    const resultFilter = arrOfNums.myFilter(item => item == 2);
 
     return (
         <>
@@ -36,6 +51,8 @@ export default function CustomFunction() {
             <div>{resultMap}</div>
             <h3>Array.prototype.forEach</h3>
             <div>{resultForEach}</div>
+            <h3>Array.prototype.filter</h3>
+            <div>{resultFilter}</div>
         </>
     )
 }
