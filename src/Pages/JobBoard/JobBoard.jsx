@@ -26,8 +26,15 @@ export default function JobBoard() {
     function getJobsList() {
 
         // Get ids of current vacancies
-        return fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
-                .then(response => response.json());
+        return new Promise((resolve, reject) => {
+            try {
+                fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
+                .then(response => response.json())
+                .catch(error => error)
+            } catch (error) {
+                reject(error);
+            }
+        })
     }
 
     function getJobsById(jobsIdList) {
