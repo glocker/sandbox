@@ -12,7 +12,6 @@ export default function JobBoard() {
 
     const [isLoading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
-    const [jobsToShow, setJobsToShow] = useState([]);
     const [jobsIdList, setJobsId] = useState();
     const [page, setPage] = useState(0);
 
@@ -26,24 +25,25 @@ export default function JobBoard() {
     function getJobsList() {
 
         // Get ids of current vacancies
-        return new Promise((resolve, reject) => {
-            try {
-                fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
+        return fetch('https://hacker-news.firebaseio.com/v0/jobstories.json')
                 .then(response => response.json())
-                .catch(error => error)
-            } catch (error) {
-                reject(error);
-            }
-        })
+                .catch(error => {
+                    console.error(error);
+                    throw error;
+                });
     }
 
     function getJobsById(jobsIdList) {
 
         // Request job data for every job id
         return Promise.all(
-            jobsToShow.map((jobId) => {
+            jobsIdList.map((jobId) => {
                 return fetch(`https://hacker-news.firebaseio.com/v0/item/${jobId}.json`)
-                    .then(response => response.json());
+                    .then(response => response.json())
+                    .catch(error => {
+                        console.error(error)
+                        throw error;
+                    })
             }))
     }
 
@@ -55,10 +55,9 @@ export default function JobBoard() {
                 // Check if Ids exists
                 if (list && list.length) {
 
+                    // Get only first 6 jobs of all existed jobs
                     const firstPage = list.slice(0, ITEMS_ON_PAGE[page]);
 
-                    // Get only first 6 jobs of all existed jobs
-                    setJobsToShow(firstPage);
                     setPage(page + 1);
 
                     // Save ids to omit unnecassary request to call getJobsList by clicking load more
