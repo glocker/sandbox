@@ -7,7 +7,7 @@ export default function Card({job}) {
     const date = new Date(time);
 
     return (
-        <article>
+        <div className="card">
             <header>
                 <h3>{title}</h3>
             </header>
@@ -15,6 +15,6 @@ export default function Card({job}) {
                 <div>Author: {by}</div>
                 <div>{date.toLocaleString()}</div>
             </footer>
-        </article>
+        </div>
     )
 }
