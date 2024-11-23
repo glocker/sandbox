@@ -11,14 +11,23 @@ const ITEMS_ON_PAGE = {
 export default function JobBoard() {
 
     const [isLoading, setLoading] = useState(true);
-    const [jobs, setJobs] = useState([]);
+    const [allJobs, setAllJobs] = useState([]);
+    const [currentJobs, setCurrentJobs] = useState([]);
     const [jobsIdList, setJobsId] = useState();
     const [page, setPage] = useState(0);
 
     function moreButtonHandler() {
 
-        if (jobsIdList.length > ITEMS_ON_PAGE[page]) {
-            getJobsById()
+        if (allJobs.length > jobsIdList.length) {
+
+            setPage(page + 1);
+            const newPortion = allJobs.slice(ITEMS_ON_PAGE[page - 1], ITEMS_ON_PAGE[page]);
+            getJobsById(newPortion)
+                .then(newJobs => {
+
+                    // Add new loaded jobs to already existed
+                    setCurrentJobs([...newJobs, ...currentJobs]);
+                })
         }
     }
 
@@ -52,28 +61,30 @@ export default function JobBoard() {
         getJobsList()
             .then(list => {
 
+                setAllJobs(list);
+
                 // Check if Ids exists
                 if (list && list.length) {
 
                     // Get only first 6 jobs of all existed jobs
                     const firstPage = list.slice(0, ITEMS_ON_PAGE[page]);
 
-                    setPage(page + 1);
+                    setPage(page);
 
-                    // Save ids to omit unnecassary request to call getJobsList by clicking load more
+                    // Save ids to omit unnecessary request to call getJobsList by clicking load more
                     setJobsId(firstPage);
 
                     return getJobsById(firstPage)
                 }
             })
             .then(result => {
-                setJobs(result);
+                setCurrentJobs(result);
             })
     }, []);
 
     return (
         <>
-            {jobs.map(job => <Card job={job} key={job.id} />)}
+            {currentJobs.map(job => <Card job={job} key={job.id} />)}
             <button onClick={moreButtonHandler}>Load more</button>
         </>
     );
