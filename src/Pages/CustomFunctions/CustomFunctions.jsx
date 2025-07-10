@@ -15,7 +15,7 @@ export default function CustomFunction() {
         return newArray;
     }
 
-    // Custom Array.prototype.map
+    // Custom Array.prototype.forEach
     Array.prototype.myForEach = function(callback) {
 
         const newArray = [];
@@ -43,7 +43,7 @@ export default function CustomFunction() {
 
     const resultMap = arrOfNums.myMap(item => item + 1);
     const resultForEach = arrOfNums.myForEach(item => item * 3);
-    const resultFilter = arrOfNums.myFilter(item => item == 2);
+    const resultFilter = arrOfNums.myFilter(item => item === 2);
 
     return (
         <>
