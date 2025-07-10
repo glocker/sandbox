@@ -7,78 +7,83 @@ import Paginator from './Paginator';
 const USERS_PER_PAGE = [5, 10, 15];
 
 export default function Grid() {
+  const [page, setPage] = useState(1);
+  const [usersPerPage, setUsers] = useState(5);
 
-    const [page, setPage] = useState(1);
-    const [usersPerPage, setUsers] = useState(5);
+  const TOTAL_PAGES = Math.ceil(users.length / usersPerPage);
 
-    const TOTAL_PAGES = Math.ceil(users.length / usersPerPage);
+  // Get short users list
+  function getSlicedList() {
+    const start = (page - 1) * usersPerPage;
+    const end = start + usersPerPage;
 
-    // Get short users list
-    function getSlicedList() {
+    return users.slice(start, end);
+  }
 
-        const start = (page - 1) * usersPerPage;
-        const end = start + usersPerPage;
+  // Next work only with short version
+  const usersSlice = getSlicedList();
 
-        return users.slice(start, end);
-    }
+  const prevPageClick = useCallback(() => {
+    const currentPage = page;
+    const prevPage = currentPage - 1;
 
-    // Next work only with short version
-    const usersSlice = getSlicedList();
+    setPage(prevPage > 0 ? prevPage : currentPage);
+  }, [page]);
 
-    const prevPageClick = useCallback(() => {
-        const currentPage = page;
-        const prevPage = currentPage - 1;
+  const nextPageClick = useCallback(() => {
+    const currentPage = page;
+    const nextPage = currentPage + 1;
 
-        setPage(prevPage > 0 ? prevPage : currentPage);
-    }, [page]);
+    const total = users ? TOTAL_PAGES : currentPage;
 
-    const nextPageClick = useCallback(() => {
-        const currentPage = page;
-        const nextPage = currentPage + 1;
+    setPage(nextPage <= total ? nextPage : currentPage);
+  }, [page, users]);
 
-        const total = users ? TOTAL_PAGES : currentPage;
+  const handleChange = useCallback(
+    (event) => {
+      setUsers(Number(event.target.value));
+    },
+    [usersPerPage, page]
+  );
 
-        setPage(nextPage <= total ? nextPage : currentPage);
-    }, [page, users]);
-
-    const handleChange = useCallback((event) => {
-        setUsers(Number(event.target.value));
-    }, [usersPerPage, page]);
-
-    return (
-        <div className="page-container">
-            <h3>Staff list</h3>
-            <div className="grid-container">
-                <span>Id</span>
-                <span>Name</span>
-                <span>Age</span>
-                <span>Occupation</span>
-                {usersSlice.map((user, index) => {
-                    return (
-                        <>
-                            <div key={user.id + '_id'}>{user.id}</div>
-                            <div key={user.id + '_name'}>{user.name}</div>
-                            <div key={user.id + '_age'}>{user.age}</div>
-                            <div key={user.id + '_occupation'}>{user.occupation}</div>
-                        </>
-                    )
-                })}
-            </div>
-            <Paginator
-                    page={page}
-                    onPrevPageClick={prevPageClick}
-                    onNextPageClick={nextPageClick}
-                    disabled={page === 1 || page === TOTAL_PAGES}
-                    totalPages={TOTAL_PAGES}
-                />
-            <div className="selector-container">
-                <span>Users per page:</span>
-                <select onChange={handleChange}>
-                    {USERS_PER_PAGE.map((qty) => {
-                        return (<option key={qty} value={qty}>{qty}</option>);
-                    })}
-                </select>
-            </div>
-        </div>
-    )
+  return (
+    <div className="page-container">
+      <h3>Staff list</h3>
+      <div className="grid-container">
+        <span>Id</span>
+        <span>Name</span>
+        <span>Age</span>
+        <span>Occupation</span>
+        {usersSlice.map((user, index) => {
+          return (
+            <>
+              <div key={user.id + '_id'}>{user.id}</div>
+              <div key={user.id + '_name'}>{user.name}</div>
+              <div key={user.id + '_age'}>{user.age}</div>
+              <div key={user.id + '_occupation'}>{user.occupation}</div>
+            </>
+          );
+        })}
+      </div>
+      <Paginator
+        page={page}
+        onPrevPageClick={prevPageClick}
+        onNextPageClick={nextPageClick}
+        disabled={page === 1 || page === TOTAL_PAGES}
+        totalPages={TOTAL_PAGES}
+      />
+      <div className="selector-container">
+        <span>Users per page:</span>
+        <select onChange={handleChange}>
+          {USERS_PER_PAGE.map((qty) => {
+            return (
+              <option key={qty} value={qty}>
+                {qty}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+    </div>
+  );
 }
