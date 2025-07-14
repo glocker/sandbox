@@ -20,25 +20,37 @@ class MyPromise {
     this.state = 'fulfilled';
 
     if (this.thenCallbacks.length) {
-      this.thenCallbacks.forEach((callback) => callback(value));
+      this.thenCallbacks.forEach((cb) => cb(value));
     }
   }
 
-  reject(value) {
-    this.value = value;
+  reject(reason) {
+    this.reason = reason;
     this.state = 'rejected';
 
     if (this.catchCallbacks.length) {
-      this.catchCallbacks.forEach((callback) => callback(value));
+      this.catchCallbacks.forEach((cb) => cb(reason));
     }
   }
 
   then(onFulfilled) {
-    if (this.state === 'fulfilled') {
-      onFulfilled(this.value);
-    } else if (this.state === 'pending') {
-      this.thenCallbacks.push(onFulfilled);
-    }
+    return new MyPromise((resolve, reject) => {
+
+      const cbWrapper = (value) => {
+        try {
+          const thenResult = onFulfilled ? onFulfilled(value) : value;
+          resolve(thenResult);
+        } catch (err) {
+          reject(err);
+        }
+      }
+
+      if (this.state === 'fulfilled') {
+        queueMicrotask(() => cbWrapper(this.value));
+      } else if (this.state === 'pending') {
+        this.thenCallbacks.push(onFulfilled);
+      }
+    })
 
     // future then chaining
     return this;
