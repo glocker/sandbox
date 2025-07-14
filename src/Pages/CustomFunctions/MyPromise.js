@@ -7,7 +7,7 @@ class MyPromise {
     this.thenCallbacks = [];
     this.catchCallbacks = [];
 
-    // Need to save context inside this.resolve
+    // Need to save context inside this.resolve and this.reject
     executor(this.resolve.bind(this), this.reject.bind(this));
   }
 
@@ -36,6 +36,7 @@ class MyPromise {
   then(onFulfilled) {
     return new MyPromise((resolve, reject) => {
 
+      // Wrapper to handle errors and pass result to next .then()
       const cbWrapper = (value) => {
         try {
           const thenResult = onFulfilled ? onFulfilled(value) : value;
@@ -51,17 +52,32 @@ class MyPromise {
         this.thenCallbacks.push(onFulfilled);
       }
     })
+  }
 
-    // future then chaining
-    return this;
+  catch(onRejected) {
+    return new MyPromise((resolve, reject) => {
+      const cbWrapper = (reason) => {
+        try {
+          const result = onRejected ? onRejected(reason) : reason;
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      if (this.state === 'rejected') {
+        queueMicrotask(() => cbWrapper(this.reason));
+      } else if (this.state === 'pending') {
+        this.catchCallbacks.push(cbWrapper);
+      }
+    });
   }
 }
 
 // Launch tests for this?
-const promise1 = new MyPromise((resolve) => {
-  resolve('Resolve. pending → fulfilled');
-});
-
-promise1.then((value) => {
-  console.log('Got value in then:', value);
-});
+new MyPromise((res) => res(42)).then(v => console.log(v)) // 42
+new MyPromise((_, rej) => rej('fail')).catch(e => console.log(e)) // "fail"
+new MyPromise((res) => setTimeout(() => res('later'), 100)).then(console.log) // later
+new MyPromise(res => res(2))
+  .then(x => x + 2)
+  .then(x => console.log(x)) // 4
