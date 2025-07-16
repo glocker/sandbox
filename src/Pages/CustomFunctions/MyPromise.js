@@ -7,11 +7,19 @@ class MyPromise {
     this.thenCallbacks = [];
     this.catchCallbacks = [];
 
-    // Need to save context inside this.resolve and this.reject
-    executor(this.resolve.bind(this), this.reject.bind(this));
+    // Need to save context inside resolve/reject
+    const resolve = (value) => this._resolve(value);
+    const reject = (reason) => this._reject(reason);
+
+    try {
+      executor(resolve, reject);
+    } catch (err) {
+      reject(err);
+    }
   }
 
-  resolve(value) {
+  // Possible to call inside or outside of class
+  _resolve(value) {
     // pending → fulfilled only once
     // resolve after fulfilled should do nothing
     if (this.state !== 'pending') return;
@@ -24,13 +32,19 @@ class MyPromise {
     }
   }
 
-  reject(reason) {
+  // Possible to call inside or outside of class
+  _reject(reason) {
     this.reason = reason;
     this.state = 'rejected';
 
     if (this.catchCallbacks.length) {
       this.catchCallbacks.forEach((cb) => cb(reason));
     }
+  }
+
+  static resolve(value) {
+    if (value instanceof MyPromise) return value;
+    return new MyPromise(resolve => resolve(value));
   }
 
   then(onFulfilled) {
@@ -72,6 +86,40 @@ class MyPromise {
       }
     });
   }
+
+  static all(promisesArray) {
+    if (promisesArray && promisesArray.length) {
+
+      return new MyPromise((resolve, reject) => {
+
+        // Promises execution results
+        const results = [];
+        // We need to count if all promises resolved
+        let completed = 0;
+
+        promisesArray.forEach((promise, index) => {
+          // Wrap non-promises data in MyPromise
+          MyPromise.resolve(promise)
+            .then(value => {
+              // Save by index
+              results[index] = value;
+              completed++;
+
+              // Check if all promises from initial array completed
+              if (completed === promisesArray.length) {
+                resolve(results);
+              }
+            })
+            .catch(reject); // First which fail call reject
+        });
+
+        // Empty array check
+        if (promisesArray.length === 0) {
+          resolve([]);
+        }
+      })
+    }
+  }
 }
 
 // Launch tests for this?
@@ -81,3 +129,10 @@ new MyPromise((res) => setTimeout(() => res('later'), 100)).then(console.log) //
 new MyPromise(res => res(2))
   .then(x => x + 2)
   .then(x => console.log(x)) // 4
+MyPromise.all([
+  MyPromise.resolve(1),
+  2,
+  new MyPromise(res => setTimeout(() => res(3), 100))
+]).then(values => {
+  console.log('all promises resolved', values); // [1, 2, 3]
+});
