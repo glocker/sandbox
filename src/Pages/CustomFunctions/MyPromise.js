@@ -120,6 +120,37 @@ class MyPromise {
       })
     }
   }
+
+  finally(callback) {
+    return new MyPromise((resolve, reject) => {
+      const handler = () => {
+        try {
+          // If callback resolves successfully then send initial result
+          const result = callback();
+          if (result instanceof MyPromise) {
+            result.then(() => {
+              this.state === 'fulfilled' ? resolve(this.value) : reject(this.reason);
+            }).catch(reject);
+          } else {
+            this.state === 'fulfilled' ? resolve(this.value) : reject(this.reason);
+          }
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      if (this.state === 'fulfilled' || this.state === 'rejected') {
+        queueMicrotask(handler);
+      } else {
+        this.thenCallbacks.push(() => {
+          handler();
+        });
+        this.catchCallbacks.push(() => {
+          handler();
+        });
+      }
+    });
+  }
 }
 
 // Launch tests for this?
@@ -136,3 +167,6 @@ MyPromise.all([
 ]).then(values => {
   console.log('all promises resolved', values); // [1, 2, 3]
 });
+new MyPromise(res => res(1))
+  .finally(() => console.log('Done!'))
+  .then(val => console.log(val)); // Done! 1
