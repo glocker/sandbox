@@ -134,6 +134,27 @@ export default function Layout() {
             <Link to="/customFunctions">See</Link>
           </article>
         </details>
+        <details className="useArray">
+          <summary>
+            <span>Custom hook useArray</span>
+            <p>
+              Implement a useArray hook that manages an array of items with additional utility methods.
+            </p>
+            <p>
+              It is more convenient to use <code>useArray</code> over plain <code>useState</code> because in the latter case, you would always have to create a new array, mutate it, then set state to use the new array, which can be quite cumbersome.
+            </p>
+            <p>
+              The hook should work generically with arrays of any types.
+            </p>
+          </summary>
+          <article className="article-container">
+            <h3>useArray</h3>
+            <ul>
+              <li>Array.prototype.map</li>
+            </ul>
+            <Link to="/customFunctions">See</Link>
+          </article>
+        </details>
       </div>
 
       <Outlet />

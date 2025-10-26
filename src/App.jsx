@@ -7,6 +7,7 @@ import CustomFunctions from 'Pages/CustomFunctions/CustomFunctions';
 import HomePage from 'Pages/HomePage/HomePage';
 import NoPage from 'Pages/NoPage/NoPage';
 import Layout from 'Pages/Layout/Layout';
+import UseArray from 'Pages/Tasks/useArray';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/tabs" element={<Tabs />} />
         <Route path="/jobboard" element={<JobBoard />} />
         <Route path="/customFunctions" element={<CustomFunctions />} />
+        <Route path="/useArray" element={<UseArray />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
