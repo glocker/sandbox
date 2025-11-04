@@ -21,6 +21,6 @@ function useArray(defaultValue) {
 
 export default function UseArray(defaultValue) {
   const { array } = useArray([123]);
-  console.log('array from hook:', array);
-  return <div>{array.join(', ')}</div>;
+  console.log('Array from hook:', array);
+  return <div>{'Array from hook: '}<code>{array}</code></div>;
 }

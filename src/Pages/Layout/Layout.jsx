@@ -134,7 +134,7 @@ export default function Layout() {
             <Link to="/customFunctions">See</Link>
           </article>
         </details>
-        <details className="useArray">
+        <details className="sketchy-border">
           <summary>
             <span>Custom hook useArray</span>
             <p>
@@ -149,10 +149,8 @@ export default function Layout() {
           </summary>
           <article className="article-container">
             <h3>useArray</h3>
-            <ul>
-              <li>Array.prototype.map</li>
-            </ul>
-            <Link to="/customFunctions">See</Link>
+            <p><code>{'const { array, push, update, remove, filter, set, clear } = useArray();'}</code></p>
+            <Link to="/useArray">See</Link>
           </article>
         </details>
       </div>
